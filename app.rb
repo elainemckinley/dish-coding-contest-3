@@ -11,3 +11,7 @@ class App < Sinatra::Base
     body.to_json
   end
 end
+
+def thing
+  'yo'
+end

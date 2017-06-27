@@ -1,11 +1,13 @@
-require 'sinatra'
+require 'sinatra/base'
 require 'pry'
 
-post '/' do
-  req = JSON.parse(request.body.read)
-  body = {
-    value: req['min'] + 2
-  }
+class App < Sinatra::Base
+  post '/' do
+    req = JSON.parse(request.body.read)
+    body = {
+      value: req['min'] + 2
+    }
 
-  body.to_json
+    body.to_json
+  end
 end

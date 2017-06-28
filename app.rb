@@ -4,16 +4,7 @@ require 'pry'
 class App < Sinatra::Base
   configure do
     set :carts, {
-      "1" => {
-        "2" => {
-          "sku" => 1234,
-          "price" => 12.99
-        },
-          "3" => {
-            "sku" => 1234,
-            "price" => 1.00
-          },
-      }
+
     }
   end
 
@@ -64,13 +55,15 @@ class App < Sinatra::Base
 
   get '/cart/:cart_id' do |cart_id|
     cart = settings.carts[cart_id]
-    subtotal = cart.reduce do |a, b|
-      a[1]['price'] + b[1]['price']
+    binding.pry
+    subtotal = cart.reduce(0) do |a, b|
+      binding.pry
+      a + b[1][:price]
     end
 
     sku_map = Hash.new
     cart.each do |item|
-      sku = item[1]['sku']
+      sku = item[1][:sku]
       if sku_map[sku] then
         sku_map[sku] << item
       else
@@ -82,7 +75,7 @@ class App < Sinatra::Base
     sku_map.each do |items|
       if items.length >= 2 then
         items[1].each do |a|
-          discount += (a[1]['price'] * 10)
+          discount += (a[1][:price] * 10)
         end
       end
     end
@@ -98,8 +91,8 @@ class App < Sinatra::Base
       items: cart.map do |k, v|
         {
           id: k,
-          sku: v['sku'],
-          price: ('%.2f' % v['price']).to_f
+          sku: v[:sku],
+          price: ('%.2f' % v[:price]).to_f
         }
       end
     }.to_json

@@ -55,9 +55,7 @@ class App < Sinatra::Base
 
   get '/cart/:cart_id' do |cart_id|
     cart = settings.carts[cart_id]
-    binding.pry
     subtotal = cart.reduce(0) do |a, b|
-      binding.pry
       a + b[1][:price]
     end
 
@@ -73,7 +71,7 @@ class App < Sinatra::Base
 
     discount = 0
     sku_map.each do |items|
-      if items.length >= 2 then
+      if items[1].length >= 2 then
         items[1].each do |a|
           discount += (a[1][:price] * 10)
         end

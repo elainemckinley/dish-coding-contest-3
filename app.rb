@@ -34,7 +34,8 @@ class App < Sinatra::Base
   end
 
   delete '/cart/:cart_id/item/:item_id' do |cart_id, item_id|
-    if settings.carts[cart_id][item_id] then
+
+    if settings.carts[cart_id][item_id.to_i] then
       settings.carts[cart_id][item_id] = nil
       response.status = 200
     else
